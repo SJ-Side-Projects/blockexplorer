@@ -1,15 +1,6 @@
-import { Alchemy, Network } from 'alchemy-sdk';
 import { useEffect, useState } from 'react';
-
+import { getCurBlock, getTransactions,parseTransaction } from './utils/ether';
 import './App.css';
-
-// Refer to the README doc for more information about using API
-// keys in client-side code. You should never do this in production
-// level code.
-const settings = {
-  apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-  network: Network.ETH_MAINNET,
-};
 
 
 // In this week's lessons we used ethers.js. Here we are using the
@@ -17,20 +8,73 @@ const settings = {
 //
 // You can read more about the packages here:
 //   https://docs.alchemy.com/reference/alchemy-sdk-api-surface-overview#api-surface
-const alchemy = new Alchemy(settings);
+
+const TABLE_HEADERS = [
+  'transactionIndex',
+  'type',
+  'from',
+  'to',
+  'value',
+  'gasPrice',
+  'hash',
+  'nonce',
+];
 
 function App() {
-  const [blockNumber, setBlockNumber] = useState();
+  const [blockNumber, setBlockNumber] = useState("");
+  const [transactions, setTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function getBlockNumber() {
-      setBlockNumber(await alchemy.core.getBlockNumber());
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    const curBlock = await getCurBlock();
+    setBlockNumber(curBlock);
+    const txs = await getTransactions(curBlock);
+    setTransactions(txs);
+    console.log(txs[0])
+    setIsLoading(false);
+  }
+
+  const refresh = () =>{
+    setIsLoading(true);
+    loadData();
+  }
+
+  return (
+  <div className="App">
+    <h1>Ethereum Block Explorer</h1>
+    <h2>Block Number: {blockNumber}</h2>
+    <button onClick={refresh}>Refresh</button>
+    {
+      !isLoading ? 
+        <div className="TableContainer">
+          <table>
+            <thead>
+              <tr>
+                {TABLE_HEADERS.map((header, i) => <th key={i}>{header}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {
+                transactions.length ? transactions.map((tx, i) => (
+                  <tr key={i}>
+                    {TABLE_HEADERS.map((header, j) => <td key={i+j}>{parseTransaction(tx)[header]}</td>)}
+                  </tr>
+                ))
+                : null
+              }
+            </tbody>
+          </table>
+        </div>
+      : <p>Loading...</p>
     }
-
-    getBlockNumber();
-  });
-
-  return <div className="App">Block Number: {blockNumber}</div>;
+    
+    
+  </div>
+);
 }
 
 export default App;

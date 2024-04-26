@@ -28,6 +28,26 @@
   color: #61dafb;
 }
 
+table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+
+td,th {
+  padding: 5px;
+  border: 1px solid #ddd;
+}
+
+.TableContainer {
+  margin-inline: auto;
+  margin-block: 20px;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow-x: scroll;
+  overflow-y: auto;
+
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
