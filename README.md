@@ -1,5 +1,17 @@
 # Ethereum Block Explorer
 
+Completed Ethereum Block Explorer using the AlchemySDK. Functionalities:
+1) Retrieve Latest Block
+2) Display Transaction information for all transactions in the latest block
+3) Refresh Latest Block
+   
+![Ethereum Block Explorer](./img/image.png)
+
+
+--- 
+
+<details>
+<summary>Assignment Details</summary>
 The lessons this week covered the Ethereum JSON-RPC API and the `ethers.js` library giving us the ability to query the Ethereum blockchain and make transactions!
 
 Let's put that knowledge to the test by building our very own **Ethereum Block Explorer**!
@@ -126,3 +138,5 @@ Read more about the above in the [Alchemy SDK Surface docs](https://docs.alchemy
 - What transfers did an address receive this year?
 
 Good luck and have fun!
+</details>
+
